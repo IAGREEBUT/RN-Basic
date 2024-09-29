@@ -61,7 +61,7 @@ const WelcomePage = () => {
             <View style={{flex: 1, height: 1, backgroundColor: '#D6D6D6'}} />
             <View>
               <Text
-                style={{textAlign: 'center', color: '#D6D6D6', textSize: 22}}>
+                style={{textAlign: 'center', color: '#D6D6D6', fontSize: 22}}>
                 소셜
               </Text>
             </View>
@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundImage: require('../../../assets/images/welcome.png'),
   },
   mainBtn: {
     height: 48,
