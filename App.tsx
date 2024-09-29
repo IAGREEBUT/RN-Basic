@@ -15,22 +15,12 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import WelcomePage from './src/screens/users';
 
 function App(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={{}}>투자NOW</Text>
-      </View>
-      <View style={{flex: 1, backgroundColor: 'red'}} />
-      <View style={{flex: 1, backgroundColor: 'orange'}} />
-      <View style={{flex: 1, backgroundColor: 'green'}} />
+      <WelcomePage />
     </SafeAreaView>
   );
 }
