@@ -16,11 +16,14 @@ import {
   View,
 } from 'react-native';
 import WelcomePage from './src/screens/users';
+import FloatingTitleTxtInput from './src/components/floatingTextInput';
 
 function App(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
-      <WelcomePage />
+      {/* <WelcomePage /> */}
+      <FloatingTitleTxtInput title='휴대폰 번호' keyboardType='phone-pad' isPassword={false}/>
+      <FloatingTitleTxtInput title='비밀번호' keyboardType='default' isPassword={true}/>
     </SafeAreaView>
   );
 }
