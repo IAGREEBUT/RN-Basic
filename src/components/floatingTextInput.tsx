@@ -15,6 +15,7 @@ type txtInputProps = {
   title: string;
   keyboardType: KeyboardTypeOptions;
   isPassword: boolean;
+  setValidation: (value: boolean) => void;
   //유효성 검사 로직을 함수로 받는게 나을듯...
 };
 
@@ -41,7 +42,9 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
   const onInActive = () => {
     //작성된게 없으면, inactive
     if (inputText === '') {
+      console.log('적힌게 없음 ');
       setIsActive(false);
+      setIsError(false);
       setErrorTxt('');
       return;
     }
@@ -89,33 +92,39 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
 
   useEffect(() => {
     if (isActive) {
-      //error는 active상태에서만 발생
+      //에러인 경우 색상
       if (isError) {
         setBorderColor('#F06E6E');
-        return;
+      } else {
+        // 에러 아닌 경우 색상처리
+        setErrorTxt('');
+        setBorderColor('#5E5656');
+        setTextColor('#5E5656');
+        setTextSize(12);
+        Animated.timing(animatedTextTop, {
+          toValue: 1,
+          duration: 180,
+          useNativeDriver: false,
+        }).start();
       }
-
-      setErrorTxt('');
-      setBorderColor('#5E5656');
-      setTextColor('#5E5656');
-      setTextSize(12);
-      // setTop(0)
-      Animated.timing(animatedTextTop, {
-        toValue: 1,
-        duration: 180,
-        useNativeDriver: false,
-      }).start();
     } else {
+      //inactive되었을때
       setErrorTxt('');
       setBorderColor('#D9D9D9');
       setTextColor('#D9D9D9');
       setTextSize(22);
-      // setTop(10)
       Animated.timing(animatedTextTop, {
         toValue: 0,
         duration: 180,
         useNativeDriver: false,
       }).start();
+    }
+
+    //유효한 필드값을 입력했는지
+    if (isActive && !isError) {
+      props.setValidation(true);
+    } else {
+      props.setValidation(false);
     }
   }, [animatedTextTop, isActive, isError]);
 
@@ -128,11 +137,11 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
   }, [isHide]);
 
   //log확인
-  useEffect(() => {
-    console.log('[log]');
-    console.log(isHide);
-    // console.log("isFocused : "+ isFocused)
-  });
+  // useEffect(() => {
+  //   // console.log('[error] : ' + isError);
+  //   // console.log('[isActive]' + isActive);
+  //   // console.log("isFocused : "+ isFocused)
+  // });
 
   return (
     <View>
@@ -200,6 +209,7 @@ const styles = StyleSheet.create({
     color: '#F06E6E',
     fontSize: 12,
     fontWeight: '500',
+    paddingBottom: 10,
   },
 });
 
