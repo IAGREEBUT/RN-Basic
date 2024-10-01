@@ -17,13 +17,15 @@ import {
 } from 'react-native';
 import WelcomePage from './src/screens/users';
 import FloatingTitleTxtInput from './src/components/floatingTextInput';
+import LoginPage from './src/screens/users/login';
+import SignUpPage from './src/screens/users/signup';
 
 function App(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
-      {/* <WelcomePage /> */}
-      <FloatingTitleTxtInput title='휴대폰 번호' keyboardType='phone-pad' isPassword={false}/>
-      <FloatingTitleTxtInput title='비밀번호' keyboardType='default' isPassword={true}/>
+      <SignUpPage />
+      {/*<FloatingTitleTxtInput title='휴대폰 번호' keyboardType='phone-pad' isPassword={false}/>*/}
+      {/*<FloatingTitleTxtInput title='비밀번호' keyboardType='default' isPassword={true}/>*/}
     </SafeAreaView>
   );
 }
