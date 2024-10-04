@@ -1,10 +1,16 @@
 //react import
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, View, Image} from 'react-native';
+import {Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import FloatingTextInput from '../../components/floatingTextInput';
 import CustomButton from '../../components/CustomButton';
 
-const SignUpPage = () => {
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParamList } from "../../../App";
+
+
+export type SignUpScreenProps = StackScreenProps<RootStackParamList, "SignUp">;
+
+const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
   // const [isValid, setIsValid] = useState(false);
 
   const [isValidNumber, setIsValidNumber] = useState(false);
@@ -13,15 +19,20 @@ const SignUpPage = () => {
   };
 
   //인증번호 쪽보여줄건지
-  const [isCountStart, setIsCountStart] = useState(true);
+  const [isCountStart, setIsCountStart] = useState(false);
+  const setCountStart = (value: boolean) => {
+    setIsCountStart(value);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
         <Image
           source={require('../../../assets/images/backArrow.png')}
           style={{width: 30, height: 30}}
         />
+        </TouchableOpacity>
       </View>
       <View style={styles.contentContainer}>
         <View>
@@ -59,6 +70,7 @@ const SignUpPage = () => {
             btnTxtColor={'#FFFFFF'}
             btnTxt={'인증번호 받기'}
             disabled={!isValidNumber}
+            onClicked={setIsCountStart}
           />
         </View>
       </View>

@@ -19,14 +19,31 @@ import WelcomePage from './src/screens/users';
 import FloatingTitleTxtInput from './src/components/floatingTextInput';
 import LoginPage from './src/screens/users/login';
 import SignUpPage from './src/screens/users/signup';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+// const Stack = createNativeStackNavigator();
+
+export type RootStackParamList = {
+  Home: undefined;
+  LogIn: undefined;
+  SignUp: undefined;
+};
+
 
 function App(): React.JSX.Element {
   return (
-    <SafeAreaView style={styles.container}>
-      <SignUpPage />
-      {/*<FloatingTitleTxtInput title='휴대폰 번호' keyboardType='phone-pad' isPassword={false}/>*/}
-      {/*<FloatingTitleTxtInput title='비밀번호' keyboardType='default' isPassword={true}/>*/}
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Home'>
+        <Stack.Screen name="Home" component={WelcomePage} options={{ headerShown: false }}/>
+        <Stack.Screen name="LogIn" component={LoginPage} options={{ headerShown: false }}/>
+        <Stack.Screen name="SignUp" component={SignUpPage} options={{ headerShown: false }}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+    // <SafeAreaView style={styles.container}>
+    //   <SignUpPage />
+    // </SafeAreaView>
   );
 }
 

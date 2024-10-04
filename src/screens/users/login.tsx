@@ -1,10 +1,16 @@
 //react import
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, View, Image} from 'react-native';
+import {Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import FloatingTextInput from '../../components/floatingTextInput';
 import CustomButton from '../../components/CustomButton';
 
-const LoginPage = () => {
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParamList } from "../../../App";
+
+
+export type LogInScreenProps = StackScreenProps<RootStackParamList, "LogIn">;
+
+const LoginPage = ({ navigation, route } : LogInScreenProps) => {
   const [isValid, setIsValid] = useState(false);
 
   const [isValidNumber, setIsValidNumber] = useState(false);
@@ -25,13 +31,18 @@ const LoginPage = () => {
     }
   }, [isValidNumber, isValidPw]);
 
+
+
+  
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
         <Image
           source={require('../../../assets/images/backArrow.png')}
           style={{width: 30, height: 30}}
         />
+        </TouchableOpacity>
       </View>
       <View style={styles.contentContainer}>
         <View>
