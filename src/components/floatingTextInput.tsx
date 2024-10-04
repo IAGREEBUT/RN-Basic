@@ -164,7 +164,7 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
               onChangeText={setInputText}
               value={inputText}
               keyboardType={props.keyboardType}
-              style={[styles.inputTxt, {flex: 3}]}
+              style={[styles.inputTxt, {flex: 3, marginTop:-10}]} //인풋값 가려짐..
               secureTextEntry={isHide}
               autoCorrect={false}
             />
