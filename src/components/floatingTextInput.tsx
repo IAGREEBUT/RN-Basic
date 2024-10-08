@@ -51,32 +51,32 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
 
     //active상태 -> 에러체크
 
-    if (props.keyboardType === 'phone-pad') {
-      if (!/^[0-9]*$/.test(inputText)) {
-        setIsError(true);
-        setErrorTxt('휴대폰 번호는 숫자로만 작성해주세요.');
-        return;
-      }
+    // if (props.keyboardType === 'phone-pad') {
+    //   if (!/^[0-9]*$/.test(inputText)) {
+    //     setIsError(true);
+    //     setErrorTxt('휴대폰 번호는 숫자로만 작성해주세요.');
+    //     return;
+    //   }
 
-      if (inputText.length !== 11) {
-        setIsError(true);
-        setErrorTxt('유효한 휴대폰 번호가 아닙니다.');
-        return;
-      }
+    //   if (inputText.length !== 11) {
+    //     setIsError(true);
+    //     setErrorTxt('유효한 휴대폰 번호가 아닙니다.');
+    //     return;
+    //   }
 
-      setIsError(false);
-    }
+    //   setIsError(false);
+    // }
 
-    //비밀번호
-    if (props.isPassword) {
-      //그냥 임의로.. 8자 이상
-      if (inputText.length < 9) {
-        setIsError(true);
-        setErrorTxt('비밀번호는 8자 이상이어야 합니다.');
-        return;
-      }
-      setIsError(false);
-    }
+    // //비밀번호
+    // if (props.isPassword) {
+    //   //그냥 임의로.. 8자 이상
+    //   if (inputText.length < 9) {
+    //     setIsError(true);
+    //     setErrorTxt('비밀번호는 8자 이상이어야 합니다.');
+    //     return;
+    //   }
+    //   setIsError(false);
+    // }
 
     //작성된게 있으면 검증로직
   };
@@ -90,7 +90,46 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
     outputRange: [10, 1],
   });
 
+  //input text값을 입력하거나, active상태로 만들면 유효성검사 
+  useEffect(()=>{
+
+    if(inputText===""){
+        setIsError(true)
+        setErrorTxt(props.title+"값을 입력해주세요.")
+        return
+    }
+
+    if (props.keyboardType === 'phone-pad') {
+        if (!/^[0-9]*$/.test(inputText)) {
+          setIsError(true);
+          setErrorTxt('휴대폰 번호는 숫자로만 작성해주세요.');
+          return;
+        }
+  
+        if (inputText.length !== 11) {
+          setIsError(true);
+          setErrorTxt('유효한 휴대폰 번호가 아닙니다.');
+          return;
+        }
+  
+        setIsError(false);
+      }
+  
+      //비밀번호
+      if (props.isPassword) {
+        //그냥 임의로.. 8자 이상
+        if (inputText.length < 9) {
+          setIsError(true);
+          setErrorTxt('비밀번호는 8자 이상이어야 합니다.');
+          return;
+        }
+        setIsError(false);
+      }
+
+  },[inputText, isActive]) //isActive가 들어간 이유는 최초 터치시에는 inputText가 변하지 않아서...검사가안됨 
+
   useEffect(() => {
+
     if (isActive) {
       //에러인 경우 색상
       if (isError) {
@@ -99,14 +138,15 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
         // 에러 아닌 경우 색상처리
         setErrorTxt('');
         setBorderColor('#5E5656');
-        setTextColor('#5E5656');
-        setTextSize(12);
-        Animated.timing(animatedTextTop, {
-          toValue: 1,
-          duration: 180,
-          useNativeDriver: false,
-        }).start();
       }
+      setTextColor('#5E5656');
+      setTextSize(12);
+      Animated.timing(animatedTextTop, {
+        toValue: 1,
+        duration: 180,
+        useNativeDriver: false,
+      }).start();
+
     } else {
       //inactive되었을때
       setErrorTxt('');
