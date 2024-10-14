@@ -7,7 +7,7 @@ type BtnProps = {
   btnTxtColor: string;
   btnTxt: string;
   disabled: boolean;
-  onClicked: (value:boolean) => void
+  onClicked: any
 };
 
 const CustomButton = (props: BtnProps) => {
@@ -18,7 +18,7 @@ const CustomButton = (props: BtnProps) => {
           styles.mainBtn,
           {backgroundColor: props.disabled ? '#D9D9D9' : props.btnColor},
         ]}
-        onPress={() => props.onClicked(true)}
+        onPress={() => props.onClicked()}
         disabled={props.disabled}>
         <Text style={[styles.mainBtnTxt, {color: props.btnTxtColor}]}>
           {props.btnTxt}

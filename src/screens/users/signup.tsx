@@ -1,28 +1,78 @@
 //react import
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import {Text, StyleSheet, View, Image, TouchableOpacity, Alert} from 'react-native';
 import FloatingTextInput from '../../components/floatingTextInput';
 import CustomButton from '../../components/CustomButton';
 
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../App";
-
+import userServices from '../../sevices/userServices';
 
 export type SignUpScreenProps = StackScreenProps<RootStackParamList, "SignUp">;
 
 const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
-  // const [isValid, setIsValid] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [password, setPassword] = useState('')
+
+  useEffect(()=>{
+    console.log(phoneNumber)
+    console.log(password)
+  },[phoneNumber, password])
+
 
   const [isValidNumber, setIsValidNumber] = useState(false);
   const setPhoneValidation = (value: boolean) => {
     setIsValidNumber(value);
   };
 
+  const [isValidCode, setIsValidCode] = useState(false);
+  const setCodeValidation = (value: boolean) => {
+    setIsValidCode(value);
+  };
+
+
   //인증번호 쪽보여줄건지
   const [isCountStart, setIsCountStart] = useState(false);
   const setCountStart = (value: boolean) => {
+    console.log("수행됨 : "+ value)
     setIsCountStart(value);
   };
+
+
+  //인증번호 유효한지 검사해서 가입절차 진행
+  const signUp = async (phoneNumber:string, code:string) => {
+
+    if (code !== '000000'){
+        Alert.alert(                    
+        "올바르지 않은 코드",                    
+        "코드를 다시 확인하여",                         
+        [                              
+            {
+            text: "확인",                              
+            onPress: () => console.log("확인누름"),     
+            style: "cancel"
+            },
+        ],
+        { cancelable: false }
+        );
+        return
+    }
+
+
+    try {
+      const res = await userServices.signUp(phoneNumber, password);
+
+      console.log(res);
+
+
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+
+
+
+  }
 
   return (
     <View style={styles.container}>
@@ -45,6 +95,7 @@ const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
             keyboardType={'phone-pad'}
             isPassword={false}
             setValidation={setPhoneValidation}
+            setInput={setPhoneNumber}
           />
           {isCountStart && (
             <>
@@ -52,7 +103,8 @@ const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
                 title={'인증번호'}
                 keyboardType={'numeric'}
                 isPassword={false}
-                setValidation={setPhoneValidation}
+                setValidation={setCodeValidation}
+                setInput={setPassword}
               />
               <Text>
                 <Text
@@ -64,15 +116,34 @@ const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
             </>
           )}
         </View>
-        <View>
-          <CustomButton
-            btnColor={'#7D85D7'}
-            btnTxtColor={'#FFFFFF'}
-            btnTxt={'인증번호 받기'}
-            disabled={!isValidNumber}
-            onClicked={setIsCountStart}
-          />
-        </View>
+        <>
+        {
+            isCountStart ?
+            (
+                <View>
+                    <CustomButton
+                    btnColor={'#7D85D7'}
+                    btnTxtColor={'#FFFFFF'}
+                    btnTxt={'가입하기'}
+                    disabled={!isValidCode}
+                    onClicked={() => signUp(phoneNumber, password)}
+                    />
+                </View>
+            )
+            :
+            (
+                <View>
+                    <CustomButton
+                    btnColor={'#7D85D7'}
+                    btnTxtColor={'#FFFFFF'}
+                    btnTxt={'인증번호 받기'}
+                    disabled={!isValidNumber}
+                    onClicked={() => setCountStart(true)}
+                    />
+                </View>
+            )
+        }
+        </>
       </View>
     </View>
   );

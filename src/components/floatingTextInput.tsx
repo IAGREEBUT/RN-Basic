@@ -16,6 +16,7 @@ type txtInputProps = {
   keyboardType: KeyboardTypeOptions;
   isPassword: boolean;
   setValidation: (value: boolean) => void;
+  setInput:(value: string) => void;
   //유효성 검사 로직을 함수로 받는게 나을듯...
 };
 
@@ -29,7 +30,7 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
   const [textSize, setTextSize] = useState(22);
 
   //텍스트 박스 입력값
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState<string>('');
   const [isError, setIsError] = useState(false);
   const [errorTxt, setErrorTxt] = useState('');
 
@@ -126,6 +127,17 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
         setIsError(false);
       }
 
+        //비밀번호
+      if (props.title === '인증번호') {
+        //그냥 임의로.. 8자 이상
+        if (inputText.length !== 6) {
+          setIsError(true);
+          setErrorTxt(props.title+'는 6자 입니다.');
+          return;
+        }
+        setIsError(false);
+      }
+
   },[inputText, isActive]) //isActive가 들어간 이유는 최초 터치시에는 inputText가 변하지 않아서...검사가안됨 
 
   useEffect(() => {
@@ -175,6 +187,12 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
       setHideImg(require('../../assets/images/eye_open.png'));
     }
   }, [isHide]);
+
+
+  useEffect(()=>{
+    console.log("플로팅:",inputText)
+    props.setInput(inputText)
+  },[inputText])
 
   //log확인
   // useEffect(() => {
