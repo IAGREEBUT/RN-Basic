@@ -55,6 +55,20 @@ const OnBoardPage = ({ navigation, route } : OnBoardScreenProps) => {
         console.log(res.status)
         if(res.status === 201){ //왜 201인지...? 
             setIsSuccess(true)
+        }else{
+            Alert.alert(                    
+                "에러발생",                    
+                "서버에서 예상치못한 에러가 발생했습니다. \n나중에 다시 시도해주세요.",                         
+                [                              
+                    {
+                    text: "홈화면으로 돌아가기",                              
+                    onPress: () => navigation.navigate('Home'),     
+                    style: "cancel"
+                    },
+                ],
+                { cancelable: false }
+                );
+                return
         }
 
       return res;
@@ -122,6 +136,15 @@ const OnBoardPage = ({ navigation, route } : OnBoardScreenProps) => {
             <Text style={[styles.titleTxt, {paddingBottom: 5}]}>{nickname}님 반갑습니다!</Text>
             <Text style={styles.subTitleTxt}>가입을 축하드립니다</Text>
           </View>
+          <View>
+                  <CustomButton
+                      btnColor={'#7D85D7'}
+                      btnTxtColor={'#FFFFFF'}
+                      btnTxt={'로그인 하러가기'}
+                      disabled={false}
+                      onClicked={() => navigation.navigate('LogIn')}
+                  />
+              </View>
         </View>
       </View>        
     )
