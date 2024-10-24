@@ -16,7 +16,7 @@ type txtInputProps = {
   keyboardType: KeyboardTypeOptions;
   isPassword: boolean;
   setValidation: (value: boolean) => void;
-  setInput:(value: string) => void;
+  setInput?:(value: string) => void;
   //유효성 검사 로직을 함수로 받는게 나을듯...
 };
 
@@ -203,7 +203,7 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
 
   useEffect(()=>{
     console.log("플로팅:",inputText)
-    props.setInput(inputText)
+    props.setInput? props.setInput(inputText) : () => {} //함수가 존재하면 쓰고 아니면 말고..
   },[inputText])
 
   //log확인
