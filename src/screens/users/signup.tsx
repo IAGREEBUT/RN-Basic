@@ -12,12 +12,12 @@ export type SignUpScreenProps = StackScreenProps<RootStackParamList, "SignUp">;
 
 const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
   const [phoneNumber, setPhoneNumber] = useState('')
-  const [password, setPassword] = useState('')
+  const [code, setCode] = useState('')
 
-  useEffect(()=>{
-    console.log(phoneNumber)
-    console.log(password)
-  },[phoneNumber, password])
+//   useEffect(()=>{
+//     console.log(phoneNumber)
+//     console.log(password)
+//   },[phoneNumber, password])
 
 
   const [isValidNumber, setIsValidNumber] = useState(false);
@@ -38,14 +38,11 @@ const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
     setIsCountStart(value);
   };
 
-
-  //인증번호 유효한지 검사해서 가입절차 진행
-  const signUp = async (phoneNumber:string, code:string) => {
-
+  const checkCodeValidation = (code:string) => {
     if (code !== '000000'){
         Alert.alert(                    
         "올바르지 않은 코드",                    
-        "코드를 다시 확인하여",                         
+        "코드를 다시 확인하여주세요",                         
         [                              
             {
             text: "확인",                              
@@ -56,23 +53,60 @@ const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
         { cancelable: false }
         );
         return
+    }else{
+        //code validation이 맞을때만 
+        navigation.navigate('OnBoard',{phoneNumber: phoneNumber})
     }
-
-
-    try {
-      const res = await userServices.signUp(phoneNumber, password);
-
-      console.log(res);
-
-
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-
-
-
   }
+
+
+  //인증번호 유효한지 검사해서 가입절차 진행
+//   const signUp = async (phoneNumber:string, code:string) => {
+
+//     if (code !== '000000'){
+//         Alert.alert(                    
+//         "올바르지 않은 코드",                    
+//         "코드를 다시 확인하여",                         
+//         [                              
+//             {
+//             text: "확인",                              
+//             onPress: () => console.log("확인누름"),     
+//             style: "cancel"
+//             },
+//         ],
+//         { cancelable: false }
+//         );
+//         return
+//     }
+
+
+//     try {
+    
+      
+//       const res = await userServices.signUp(phoneNumber, password);
+//     //   const res2 = await userServices.getUsers()
+//     //   console.log(res2)
+//       console.log(res);
+
+
+//       return res;
+//     } catch (error) {
+//       console.log(error);
+//     }
+
+    // useEffect(() => {
+        // fetch('http://10.0.2.2:3001/users/')
+        //   .then((res) => {
+        //     return res.json();
+        //   })
+        //   .then((data) => {
+        //     console.log(data)
+        //   })
+        //   .catch((err) => {
+        //     console.error(`error : `, err);
+        //   });
+    //   }, [url]);
+//   }
 
   return (
     <View style={styles.container}>
@@ -104,7 +138,7 @@ const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
                 keyboardType={'numeric'}
                 isPassword={false}
                 setValidation={setCodeValidation}
-                setInput={setPassword}
+                setInput={setCode}
               />
               <Text>
                 <Text
@@ -112,7 +146,7 @@ const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
                   인증번호
                 </Text>
                 를 받지못하셨나요?
-              </Text>
+              </Text> 
             </>
           )}
         </View>
@@ -124,9 +158,9 @@ const SignUpPage = ({ navigation, route } : SignUpScreenProps) => {
                     <CustomButton
                     btnColor={'#7D85D7'}
                     btnTxtColor={'#FFFFFF'}
-                    btnTxt={'가입하기'}
+                    btnTxt={'인증하기'}
                     disabled={!isValidCode}
-                    onClicked={() => signUp(phoneNumber, password)}
+                    onClicked={() => checkCodeValidation(code)}
                     />
                 </View>
             )

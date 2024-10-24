@@ -136,6 +136,18 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
           return;
         }
         setIsError(false);
+      }else if(props.title === '닉네임'){
+        if (inputText.length < 3) {
+            setIsError(true);
+            setErrorTxt(props.title+'는 3자 이상이어야 합니다.');
+            return;
+        }
+        else if(inputText.length > 9){
+            setIsError(true);
+            setErrorTxt('8자 이하로 입력해주세요.');
+            return;
+        }
+        setIsError(false);
       }
 
   },[inputText, isActive]) //isActive가 들어간 이유는 최초 터치시에는 inputText가 변하지 않아서...검사가안됨 

@@ -1,8 +1,22 @@
 {
-    "users":[
-        {
-            "phoneNumber" : "01012345678",
-            "password" : "qwer1234"
-        }
-    ]
+  "users": [
+    {
+      "id": "ecfe",
+      "phoneNumber": "01065547894",
+      "password": "112345678",
+      "nickname": "heelo"
+    },
+    {
+      "id": "4608",
+      "phoneNumber": "01012345678",
+      "password": "123456778",
+      "nickname": "helloworl"
+    },
+    {
+      "id": "6176",
+      "phoneNumber": "01023456789",
+      "password": "123456666",
+      "nickname": "annyeong"
+    }
+  ]
 }

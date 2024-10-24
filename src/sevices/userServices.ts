@@ -3,16 +3,10 @@ import axios from '../utils/axios';
 
 class UserService {
   //SignUp.tsx
-  signUp(phoneNumber: string | null, password: string | null) {
+  signUp(phoneNumber: string | null, password: string | null, nickname: string|null) {
     return axios.post<userType>(
       `/users`,
-      { phoneNumber: phoneNumber, password: password },
-      {
-        headers: {
-            Accept: 'application/json',
-            'content-Type': 'application/json',
-          },
-      }
+      { phoneNumber: phoneNumber, password: password, nickname: nickname },
     );
   }
 

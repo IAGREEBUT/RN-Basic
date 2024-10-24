@@ -1,7 +1,7 @@
 export default interface userType {
-    // userId: number;
+    id: string;
     phoneNumber: string;
     password: string;
-    // nickname: string;
+    nickname: string;
   }
   
