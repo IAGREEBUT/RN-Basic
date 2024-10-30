@@ -6,11 +6,14 @@ import CustomButton from '../../components/CustomButton';
 
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../App";
-
-
+import userServices from '../../sevices/userServices';
+import { Alert } from 'react-native';
+import userType from '../../types/users';
 export type LogInScreenProps = StackScreenProps<RootStackParamList, "LogIn">;
 
 const LoginPage = ({ navigation, route } : LogInScreenProps) => {
+  const [loginErrMsg, setLoginErrorMsg] = useState('') //loginErrMsg가 바뀌고 재랜더링 되면서 여기도 실행되어서 다시 ''으로 초기화되는건가..??
+
   const [isValid, setIsValid] = useState(false);
 
   const [isValidNumber, setIsValidNumber] = useState(false);
@@ -31,9 +34,76 @@ const LoginPage = ({ navigation, route } : LogInScreenProps) => {
     }
   }, [isValidNumber, isValidPw]);
 
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [password, setPassword] = useState('')
 
+  const login = async(phoneNumber:string, password:string) => {
+
+    try {
+          
+      const res = await userServices.getUsers();
+    
+        // console.log(res)
+        if(res.status === 201 || res.status === 200){ //왜 201인지...? 
+          console.log("=============")
+          const users:userType[] = res.data;
+
+          let flag = false
+          users.map((user)=>{
+            if(user.phoneNumber === phoneNumber && user.password === password){
+              //login 성공  
+              console.log('login success')
+              setLoginErrorMsg('') 
+              flag = true
+              navigation.navigate('Main',{nickname:user.nickname,phoneNumber: user.phoneNumber})
+              return
+            }
+          })
+
+          if(!flag){
+            setLoginErrorMsg('유효하지 않은 아이디 또는 잘못된 비밀번호 입니다.')
+            console.log("flag : " + loginErrMsg)
+            Alert.alert(                    
+              "에러발생",                    
+              "유효하지 않은 아이디 또는 잘못된 비밀번호 입니다.",                         
+              [                              
+                  {
+                  text: "",                                   
+                  style: "cancel"
+                  },
+              ],
+              { cancelable: false }
+              );
+              return
+          }
+
+        }else{
+            Alert.alert(                    
+                "에러발생",                    
+                "서버에서 예상치못한 에러가 발생했습니다. \n나중에 다시 시도해주세요.",                         
+                [                              
+                    {
+                    text: "홈화면으로 돌아가기",                              
+                    onPress: () => navigation.navigate('Home'),     
+                    style: "cancel"
+                    },
+                ],
+                { cancelable: false }
+                );
+                return
+        }
+
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+    }
 
   
+  useEffect(() => {
+    console.log("Updated loginErrMsg: ", loginErrMsg);
+  }, [loginErrMsg]); // loginErrMsg가 변경될 때마다 확인
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -55,12 +125,15 @@ const LoginPage = ({ navigation, route } : LogInScreenProps) => {
             keyboardType={'phone-pad'}
             isPassword={false}
             setValidation={setPhoneValidation}
+            setInput={setPhoneNumber}
           />
           <FloatingTextInput
             title={'비밀번호'}
             keyboardType={'default'}
             isPassword={true}
             setValidation={setPwValidation}
+            setInput={setPassword}
+            errorMsg={loginErrMsg}
           />
           <Text>
             <Text style={{fontWeight: 'bold', textDecorationLine: 'underline'}}>
@@ -75,6 +148,7 @@ const LoginPage = ({ navigation, route } : LogInScreenProps) => {
             btnTxtColor={'#FFFFFF'}
             btnTxt={'로그인'}
             disabled={!isValid}
+            onClicked={() => login(phoneNumber, password)}
           />
         </View>
       </View>

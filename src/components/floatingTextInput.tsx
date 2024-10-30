@@ -17,6 +17,7 @@ type txtInputProps = {
   isPassword: boolean;
   setValidation: (value: boolean) => void;
   setInput?:(value: string) => void;
+  errorMsg?:string;
   //유효성 검사 로직을 함수로 받는게 나을듯...
 };
 
@@ -31,8 +32,8 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
 
   //텍스트 박스 입력값
   const [inputText, setInputText] = useState<string>('');
-  const [isError, setIsError] = useState(false);
-  const [errorTxt, setErrorTxt] = useState('');
+  const [isError, setIsError] = useState(props.errorMsg?true : false);
+  const [errorTxt, setErrorTxt] = useState(props.errorMsg);
 
   //비밀번호 입력인경우
   const [isHide, setIsHide] = useState(props.isPassword); //최초값은 비번이면 무조건 hide로 설정
@@ -207,11 +208,15 @@ const FloatingTitleTxtInput = (props: txtInputProps) => {
   },[inputText])
 
   //log확인
-  // useEffect(() => {
-  //   // console.log('[error] : ' + isError);
-  //   // console.log('[isActive]' + isActive);
-  //   // console.log("isFocused : "+ isFocused)
-  // });
+  useEffect(() => {
+     console.log("????왜 렌더링 안되는거지 " + props.title)
+     console.log('[error] : ' + isError);
+     console.log('err msg : '+ errorTxt)
+    // console.log('[isActive]' + isActive);
+    // console.log("isFocused : "+ isFocused)
+  });
+
+
 
   return (
     <View>
