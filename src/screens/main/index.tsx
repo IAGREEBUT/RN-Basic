@@ -7,18 +7,21 @@ import CustomButton from '../../components/CustomButton';
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../App";
 import userServices from '../../sevices/userServices';
+import {atom, useAtomValue} from 'jotai'
+import { USER_ID, USER_NICKNAME } from '../../store';
 
 export type MainScreenProps = StackScreenProps<RootStackParamList, "Main">;
 
 const MainPage = ({ navigation, route } : MainScreenProps) => {
-    const {nickname, phoneNumber} = route.params
+    const nickname = useAtomValue(USER_NICKNAME)
+    const userId = useAtomValue(USER_ID)
 
   return (
     <View style={styles.container}>
     <View style={styles.contentContainer}>
       <View>
         <Text style={[styles.titleTxt, {paddingBottom: 5}]}>{nickname}님 반갑습니다!</Text>
-        <Text style={styles.subTitleTxt}>로그인 성공화면 임시</Text>
+        <Text style={styles.subTitleTxt}>로그인 성공화면 임시 유저아이디 : {userId}</Text>
       </View>
       <View>
                   <CustomButton

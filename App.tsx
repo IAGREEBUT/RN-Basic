@@ -32,7 +32,7 @@ export type RootStackParamList = {
   LogIn: undefined;
   SignUp: undefined;
   OnBoard: {phoneNumber:string};
-  Main : {nickname:string, phoneNumber:string}
+  Main : undefined;
 };
 
 

@@ -9,6 +9,11 @@ import { RootStackParamList } from "../../../App";
 import userServices from '../../sevices/userServices';
 import { Alert } from 'react-native';
 import userType from '../../types/users';
+import { atom, useAtom } from 'jotai'
+import { USER_ID, USER_NICKNAME } from '../../store';
+
+// import { updateUserId, updateUserNickname } from '../../store/actions/users';
+
 export type LogInScreenProps = StackScreenProps<RootStackParamList, "LogIn">;
 
 const LoginPage = ({ navigation, route } : LogInScreenProps) => {
@@ -37,6 +42,9 @@ const LoginPage = ({ navigation, route } : LogInScreenProps) => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
 
+  const [userId, setUserId] = useAtom(USER_ID)
+  const [nickname, setNickname] = useAtom(USER_NICKNAME)
+
   const login = async(phoneNumber:string, password:string) => {
 
     try {
@@ -53,9 +61,11 @@ const LoginPage = ({ navigation, route } : LogInScreenProps) => {
             if(user.phoneNumber === phoneNumber && user.password === password){
               //login 성공  
               console.log('login success')
+              setUserId(user.id)
+              setNickname(user.nickname)
               setLoginErrorMsg('') 
               flag = true
-              navigation.navigate('Main',{nickname:user.nickname,phoneNumber: user.phoneNumber})
+              navigation.navigate('Main')
               return
             }
           })
