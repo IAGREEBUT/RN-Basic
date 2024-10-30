@@ -19,11 +19,6 @@ const OnBoardPage = ({ navigation, route } : OnBoardScreenProps) => {
 
     const [isSuccess, setIsSuccess] = useState(false)
   
-  //   useEffect(()=>{
-  //     console.log(phoneNumber)
-  //     console.log(password)
-  //   },[phoneNumber, password])
-  
   
     const [isValidNickname, setIsValidNickname] = useState(false);
     const setNicknameValidation = (value: boolean) => {
